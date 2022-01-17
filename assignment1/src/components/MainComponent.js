@@ -9,7 +9,12 @@ class Main extends Component {
     super(props);
     this.state = {
       staffs: STAFFS,
+      selectedStaff: null,
     }
+  }
+
+  onStaffSelect(staff) {
+    this.setState({ selectedStaff: staff });
   }
 
   render() {
@@ -21,7 +26,7 @@ class Main extends Component {
             <NavbarBrand href="/">Ứng dụng quản lý nhân sự v1.0</NavbarBrand>
           </div>
         </Navbar>
-        <StaffList staffs={this.state.staffs} />
+        <StaffList staffs={this.state.staffs} selectedStaff={this.state.selectedStaff} />
       </div>
     );
   }
