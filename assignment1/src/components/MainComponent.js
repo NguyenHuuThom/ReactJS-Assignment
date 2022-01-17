@@ -1,20 +1,30 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
+import { Navbar, NavbarBrand } from "reactstrap";
+import StaffList from './StaffListComponent';
+import { STAFFS } from '../shared/staffs';
+
 
 class Main extends Component {
-
-    constructor(props) {
-        super(props);
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      staffs: STAFFS,
     }
+  }
 
-    render() {
-        return (
-            <React.Fragment>
-                <h1>App</h1>
-                <p>Start create React app</p>
-            </React.Fragment>
-        )
-    }
+  render() {
+
+    return (
+      <div className="App">
+        <Navbar dark color="primary">
+          <div className="container">
+            <NavbarBrand href="/">Ứng dụng quản lý nhân sự v1.0</NavbarBrand>
+          </div>
+        </Navbar>
+        <StaffList staffs={this.state.staffs} />
+      </div>
+    );
+  }
 }
 
-export default Main
+export default Main;

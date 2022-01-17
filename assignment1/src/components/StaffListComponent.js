@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardTitle, } from 'reactstrap';
 
-const Staff = (props) => {
+const StaffList = (props) => {
     const staff = props.staffs.map((staff) => {
         return (
             <div key={staff.id} className="col-12 col-sm-6 col-md-4 col-xl-2 mt-4">
@@ -21,4 +21,4 @@ const Staff = (props) => {
     );
 }
 
-export default Staff
+export default StaffList
