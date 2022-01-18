@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardText, CardBody, CardTitle, CardImg } from 'reactstrap';
+import { Card, p, CardBody, CardTitle, CardImg } from 'reactstrap';
 import dateFormat from "dateformat";
 
 class StaffList extends Component {
@@ -21,22 +21,26 @@ class StaffList extends Component {
             const startDate = dateFormat(staff.startDate, "dd/mm/yyyy")
 
             return (
-                <Card>
-                    <CardImg src={staff.image} alt={staff.name} />
-                    <CardBody>
-                        <CardTitle><b>{`Họ và tên: ${staff.name}`}</b></CardTitle>
-                        <CardText>{`Ngày sinh: ${dateOfBirth}`}</CardText>
-                        <CardText>{`Ngày vào công ty: ${startDate}`}</CardText>
-                        <CardText>{`Phòng ban: ${staff.department.name}`}</CardText>
-                        <CardText>{`Ngày nghỉ còn lại: ${staff.annualLeave}`}</CardText>
-                        <CardText>{`Số ngày đã làm thêm : ${staff.overTime}`}</CardText>
-                    </CardBody>
+                <Card className="col-12 col-md-12 col-lg-6 m-3">
+                    <div className="d-flex">
+                        <div className="m-2 mt-3">
+                            <img src={staff.image} alt={staff.name} />
+                        </div>
+                        <div className="m-2">
+                            <h5><b>{`Họ và tên: ${staff.name}`}</b></h5>
+                            <p>{`Ngày sinh: ${dateOfBirth}`}</p>
+                            <p>{`Ngày vào công ty: ${startDate}`}</p>
+                            <p>{`Phòng ban: ${staff.department.name}`}</p>
+                            <p>{`Ngày nghỉ còn lại: ${staff.annualLeave}`}</p>
+                            <p>{`Số ngày đã làm thêm : ${staff.overTime}`}</p>
+                        </div>
+                    </div>
                 </Card>
             )
         }
         else {
             return (
-                <div>Bấm vào tên nhân viên để xem thông tin.</div>
+                <div className="m-3">Bấm vào tên nhân viên để xem thông tin.</div>
             )
         }
     }
@@ -60,9 +64,7 @@ class StaffList extends Component {
                 </div>
 
                 <div className="row">
-                    <div className="col-12 col-md-6 mt-4">
-                        {this.renderStaff(this.state.selectedStaff)}
-                    </div>
+                    {this.renderStaff(this.state.selectedStaff)}
                 </div>
             </div>
         );
