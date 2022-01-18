@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Navbar, NavbarBrand } from "reactstrap";
 import StaffList from './StaffListComponent';
+import Footer from './FooterComponent';
 import { STAFFS } from '../shared/staffs';
-
 
 class Main extends Component {
   constructor(props) {
@@ -27,6 +27,7 @@ class Main extends Component {
           </div>
         </Navbar>
         <StaffList staffs={this.state.staffs} selectedStaff={this.state.selectedStaff} />
+        <Footer />
       </div>
     );
   }
