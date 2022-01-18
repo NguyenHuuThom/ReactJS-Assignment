@@ -22,6 +22,7 @@ class StaffList extends Component {
 
             return (
                 <Card>
+                    <CardImg src={staff.image} alt={staff.name} />
                     <CardBody>
                         <CardTitle><b>{`Họ và tên: ${staff.name}`}</b></CardTitle>
                         <CardText>{`Ngày sinh: ${dateOfBirth}`}</CardText>
@@ -45,6 +46,7 @@ class StaffList extends Component {
             return (
                 <div key={staff.id} className="col-12 col-sm-6 col-md-4 col-xl-2 mt-4">
                     <Card onClick={() => this.onStaffSelect(staff)}>
+                        <CardImg width="100%" src={staff.image} alt={staff.name} />
                         <CardTitle className="text-center m-1" heading="true">{staff.name}</CardTitle>
                     </Card>
                 </div>
