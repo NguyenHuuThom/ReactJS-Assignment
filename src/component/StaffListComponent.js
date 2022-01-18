@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 function RenderStaffList({ staff, onClick }) {
     return (
         <Card className="bg-info">
-            <Link to={`/staff/${staff.id}`}>
+            <Link to={`/staffs/${staff.id}`}>
                 <CardImg width="100%" src={staff.image} alt={staff.name} />
                 <CardTitle className="text-center m-1 text-white" heading="true">{staff.name}</CardTitle>
             </Link>
