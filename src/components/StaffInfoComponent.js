@@ -11,7 +11,7 @@ function RenderStaff(staff) {
             <Card className="bg-info p-2 col-sm-4 col-md-3 col-lg-4 m-0" >
                 <CardImg src={staff.staff.image} alt={staff.staff.name} />
             </Card>
-            <Card className="bg-info p-2">
+            <Card className="bg-info text-white p-2">
                 <CardTitle><b>{`Họ và tên: ${staff.staff.name}`}</b></CardTitle>
                 <CardText>{`Ngày sinh: ${dateOfBirth}`}</CardText>
                 <CardText>{`Ngày vào công ty: ${startDate}`}</CardText>
