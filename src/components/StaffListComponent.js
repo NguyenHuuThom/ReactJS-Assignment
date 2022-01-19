@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Breadcrumb, BreadcrumbItem, Card, CardTitle, CardImg, Button, FormGroup, Input, Form, Col } from 'reactstrap';
+import { Breadcrumb, BreadcrumbItem, Card, CardTitle, CardImg, Button, FormGroup, Input, Form, Col, CardText } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { STAFFS } from '../shared/staffs';
 
 function RenderStaffList({ staff, onClick }) {
     return (
@@ -16,7 +17,10 @@ function RenderStaffList({ staff, onClick }) {
 class NameForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { value: '' };
+        this.state = {
+            staffs: STAFFS,
+            value: '',
+        };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -27,8 +31,20 @@ class NameForm extends React.Component {
     }
 
     handleSubmit(event) {
-        console.log('A name was submitted: ' + this.state.value);
         event.preventDefault();
+        console.log('A name was submitted: ' + this.state.value);
+        
+        const searchname =this.state.value;
+        const staffs = this.state.staffs;
+
+        const Q = staffs.filter((staff) => {
+            if (searchname === "") {
+                return staff
+            } else if (staff.name.toLowerCase().includes(searchname.toLowerCase())) {
+                return staff
+            }
+        })
+        console.log(Q);
     }
 
     render() {
