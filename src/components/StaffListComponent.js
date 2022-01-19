@@ -13,6 +13,52 @@ function RenderStaffList({ staff, onClick }) {
     )
 }
 
+class NameForm extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { value: '' };
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleChange(event) {
+        this.setState({ value: event.target.value });
+    }
+
+    handleSubmit(event) {
+        console.log('A name was submitted: ' + this.state.value);
+        event.preventDefault();
+    }
+
+    render() {
+        return (
+            <Form className="ml-auto mt-4" onSubmit={this.handleSubmit}>
+                <FormGroup row>
+                    <Col md={12} className='d-flex'>
+                        <Input
+                            type="text"
+                            id="searchname"
+                            name="searchname"
+                            placeholder="Tìm theo tên"
+                            value={this.state.value}
+                            onChange={this.handleChange}
+                        />
+                        <Button
+                            className='ml-2'
+                            outline
+                            type="submit"
+                            value="submit"
+                            color="primary"
+                        >
+                            <span className="fa fa-search fa-lg"></span>
+                        </Button>
+                    </Col>
+                </FormGroup>
+            </Form>
+        );
+    }
+}
 
 const StaffList = (props) => {
     const staff = props.staffs.map((staff) => {
@@ -29,27 +75,7 @@ const StaffList = (props) => {
                     <BreadcrumbItem><Link to="/staff">Nhân Viên</Link></BreadcrumbItem>
                 </Breadcrumb>
 
-                <Form className="ml-auto mt-4">
-                    <FormGroup row>
-                        <Col md={12} className='d-flex'>
-                            <Input
-                                type="text"
-                                id="searchname"
-                                name="searchname"
-                                placeholder="Tìm theo tên"
-                            />
-                            <Button
-                                className='ml-2'
-                                outline
-                                type="submit"
-                                value="submit"
-                                color="primary"
-                            >
-                                <span className="fa fa-search fa-lg"></span>
-                            </Button>
-                        </Col>
-                    </FormGroup>
-                </Form>
+                <NameForm props={props} />
             </div>
             <div className="row">
                 {staff}
