@@ -33,18 +33,6 @@ class NameForm extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         console.log('A name was submitted: ' + this.state.value);
-        
-        const searchname =this.state.value;
-        const staffs = this.state.staffs;
-
-        const Q = staffs.filter((staff) => {
-            if (searchname === "") {
-                return staff
-            } else if (staff.name.toLowerCase().includes(searchname.toLowerCase())) {
-                return staff
-            }
-        })
-        console.log(Q);
     }
 
     render() {
