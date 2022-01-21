@@ -39,15 +39,17 @@ const Staffs = (props) => {
     const handleAdd = (event) => {
         event.preventDefault();
         toggleModal()
-        console.log({
-            name,
-            dateofbirt,
-            startdate,
-            department,
-            scalesalary,
-            halowin,
-            overtime,
-        })
+        const newStaff = {
+            id: staffs.length,
+            name: name,
+            doB: dateofbirt,
+            startDate: startdate,
+            department: department,
+            salaryScale: scalesalary,
+            annualLeave: halowin,
+            overTime: overtime,
+        }
+        console.log(newStaff)
     }
 
     const handleSearch = (event) => {
