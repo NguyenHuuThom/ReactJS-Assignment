@@ -48,8 +48,20 @@ const Staffs = (props) => {
             salaryScale: scalesalary,
             annualLeave: halowin,
             overTime: overtime,
+            image: '/assets/images/alberto.png',
         }
+
+        setStaffs(prev => {
+            const newStaffs = [...prev, newStaff]
+
+            //save to local storage
+            const jsonStaffs = JSON.stringify(newStaffs)
+            localStorage.setItem('staffs', jsonStaffs)
+
+            return newStaffs
+        })
         console.log(newStaff)
+
     }
 
     const handleSearch = (event) => {
