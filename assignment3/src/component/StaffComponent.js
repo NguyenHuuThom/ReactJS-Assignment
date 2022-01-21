@@ -17,7 +17,11 @@ function RenderStaffList({ staff, onClick, }) {
 }
 
 const Staffs = (props) => {
-    
+
+    const [staffs, setStaffs] = useState(() => {
+        return props.staffs
+    })
+
     const [modal, setModal] = useState(false);
 
     const toggleModal = () => {
@@ -48,12 +52,16 @@ const Staffs = (props) => {
 
     const handleSearch = (event) => {
         event.preventDefault();
-        const searchname = this.searchname.value.toLowerCase()
-        const staffsearch = props.staffs.filter(staff => staff.name.toLowerCase().split(' ').find(item => item === searchname) !== undefined);
+        let searchname = this.searchname.value.toLowerCase()
+        const staffsearch = staffs.filter(staff => staff.name.toLowerCase().split(' ').find(item => item === searchname) !== undefined);
+        if(staffsearch.length > 0) {
+            setStaffs(staffsearch)
+        } else { setStaffs(staffs) }
         console.log(staffsearch);
+        this.searchname.value = '';
     }
 
-    const staff = (props.staffs).map((staff) => {
+    const staff = (staffs).map((staff) => {
         return (
             <div key={staff.id} className="col-12 col-sm-6 col-md-4 col-xl-2 mt-4">
                 <RenderStaffList staff={staff} onClick={props.onClick} />
