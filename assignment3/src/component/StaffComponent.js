@@ -18,8 +18,8 @@ function RenderStaffList({ staff, onClick, }) {
 
 const Staffs = (props) => {
     const storageStaffs = JSON.parse(localStorage.getItem('staffs'))
-    console.log(storageStaffs);
     const [staffs, setStaffs] = useState(storageStaffs || props.staffs)
+    console.log(storageStaffs);
     const [modal, setModal] = useState(false);
     const toggleModal = () => {
         setModal(!modal);
