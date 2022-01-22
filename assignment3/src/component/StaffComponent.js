@@ -17,13 +17,10 @@ function RenderStaffList({ staff, onClick, }) {
 }
 
 const Staffs = (props) => {
-
-    const [staffs, setStaffs] = useState(() => {
-        return props.staffs
-    })
-
+    const storageStaffs = JSON.parse(localStorage.getItem('staffs'))
+    console.log(storageStaffs);
+    const [staffs, setStaffs] = useState(storageStaffs || props.staffs)
     const [modal, setModal] = useState(false);
-
     const toggleModal = () => {
         setModal(!modal);
     }
@@ -39,43 +36,42 @@ const Staffs = (props) => {
     const handleAdd = (event) => {
         event.preventDefault();
         toggleModal()
+
         const newStaff = {
             id: staffs.length,
             name: name,
-            doB: dateofbirt,
+            doB: dateofbirt, 
             startDate: startdate,
-            department: department,
+            department: department, 
             salaryScale: scalesalary,
             annualLeave: halowin,
             overTime: overtime,
             image: '/assets/images/alberto.png',
         }
 
-        setStaffs(prev => {
-            const newStaffs = [...prev, newStaff]
 
+        setStaffs (prev => {
+            const newStaffs = [...prev, newStaff]
+            
             //save to local storage
             const jsonStaffs = JSON.stringify(newStaffs)
             localStorage.setItem('staffs', jsonStaffs)
-
-            return newStaffs
+            
+            return storageStaffs || newStaffs
         })
-        console.log(newStaff)
-
+        
+        console.log(newStaff);
     }
 
     const handleSearch = (event) => {
         event.preventDefault();
-        let searchname = this.searchname.value.toLowerCase()
+        const searchname = this.searchname.value.toLowerCase()
         const staffsearch = staffs.filter(staff => staff.name.toLowerCase().split(' ').find(item => item === searchname) !== undefined);
-        if(staffsearch.length > 0) {
-            setStaffs(staffsearch)
-        } else { setStaffs(staffs) }
         console.log(staffsearch);
-        this.searchname.value = '';
+        setStaffs(staffsearch)
     }
 
-    const staff = (staffs).map((staff) => {
+    const staff = (storageStaffs || staffs).map((staff) => {
         return (
             <div key={staff.id} className="col-12 col-sm-6 col-md-4 col-xl-2 mt-4">
                 <RenderStaffList staff={staff} onClick={props.onClick} />

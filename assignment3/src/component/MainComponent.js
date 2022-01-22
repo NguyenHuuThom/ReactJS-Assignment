@@ -23,10 +23,12 @@ class Main extends Component {
 
     render() {
 
+        const storageStaffs = JSON.parse(localStorage.getItem('staffs'))
         const StaffWithId = ({ match }) => {
+
             return (
                 <StaffInfo
-                    staff={(this.state.staffs).filter((dish) => dish.id === parseInt(match.params.staffId, 10))[0]}
+                    staff={(storageStaffs || this.state.staffs).filter((staff) => staff.id === parseInt(match.params.staffId, 10))[0]}
                 />
             )
         }
@@ -38,7 +40,7 @@ class Main extends Component {
                     <Route path='/staff/:staffId' component={StaffWithId} />
                     <Route exact path='/staffs' component={() => <Staff staffs={this.state.staffs} />} />
                     <Route exact path='/departments' component={() => <Department departments={this.state.departments} />} />
-                    <Route exact path='/salary' component={() => <Salary staffs={(this.state.staffs)} />} />
+                    <Route exact path='/salary' component={() => <Salary staffs={(storageStaffs || this.state.staffs)} />} />
                     <Redirect to="/staffs" />
                 </Switch>
                 <Footer />
