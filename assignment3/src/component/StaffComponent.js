@@ -4,6 +4,11 @@ import { STAFFS, DEPARTMENTS } from '../shared/staffs';
 import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors, } from 'react-redux-form';
 
+// form validation 
+const required = (value) => value && value.length > 0;
+const maxlength = (len) => (value) => !(value) || (value.length <= len);
+const isNumber = (value) => !(value) || !isNaN(Number(value));
+const maxnum = (value) => value >= 1 && value <= 3;
 
 function RenderStaffList({ staff, onClick, }) {
     return (
@@ -32,65 +37,18 @@ const Staffs = (props) => {
     const [halowin, setHalowin] = useState('')
     const [overtime, setOvertime] = useState('')
 
-    // set state for touch
-    const [touchName, settouchName] = useState(false);
-    const [touchdoB, settouchdoB] = useState(false);
-    const [touchstartDate, settouchstartDate] = useState(false);
-    const [touchsalaryScale, settouchsalaryScale] = useState(false);
-    const [touchannualLeave, settouchannualLeave] = useState(false);
-    const [touchoverTime, settouchoverTime] = useState(false);
-
-    // form validation
-
-    const validate = (name, doB, startDate, salaryScale, annualLeave, overTime) => {
-        const error = {
-            name: "",
-            doB: "",
-            startDate: "",
-            department: "",
-            salaryScale: "",
-            annualLeave: "",
-            overTime: "",
-        };
-
-        if (touchName && name.length > 20) {
-            error.name = "Vui lòng nhập tên dưới 20 ký tự";
-        }
-
-        if (touchsalaryScale && isNaN(salaryScale)) {
-            error.salaryScale = "Vui lòng nhập giá trị số từ 1 -> 3";
-        }
-
-        if (salaryScale < 0 || salaryScale > 3) {
-            error.salaryScale = "Vui lòng nhập giá trị số từ 1 -> 3";
-        }
-
-        if (touchannualLeave && isNaN(annualLeave)) {
-            error.annualLeave = "Vui lòng nhập giá trị số";
-        }
-
-        if (touchoverTime && isNaN(overTime)) {
-            error.overTime = "Vui lòng nhập giá trị số";
-        }
-
-        return error;
-    };
-
-    const error = validate(name, dateofbirt, startdate, scalesalary, halowin, overtime)
-
-    const handleAdd = (event) => {
-        event.preventDefault();
+    const handleAdd = (values) => {
         toggleModal()
 
         const newStaff = {
             id: staffs.length,
-            name: name,
+            name: values.name,
             doB: dateofbirt,
             startDate: startdate,
             department: department,
-            salaryScale: scalesalary,
-            annualLeave: halowin,
-            overTime: overtime,
+            salaryScale: values.salaryScale,
+            annualLeave: values.annualLeave,
+            overTime: values.overTime,
             image: '/assets/images/alberto.png',
         }
 
@@ -135,20 +93,34 @@ const Staffs = (props) => {
                 <Modal isOpen={modal} toggle={toggleModal}>
                     <ModalHeader toggle={toggleModal}>Thêm nhân viên</ModalHeader>
                     <ModalBody>
-                        <Form onSubmit={(value) => handleAdd(value)}>
+                        <LocalForm onSubmit={(value) => handleAdd(value)}>
                             <FormGroup>
-                                <Label htmlFor="name">Họ tên</Label>
-                                <Input value={name} onChange={(e) => setName(e.target.value)} type="text" id="name" name="name" required onBlur={(touch) => { return settouchName(true) }} />
-                                <p className="text-danger">{error.name}</p>
+                                <Label htmlFor="name">Họ và tên</Label>
+                                <Control.text
+                                    model=".name"
+                                    id="name"
+                                    name="name"
+                                    className="form-control"
+                                    validators={{ required, maxLength: maxlength(15) }}
+                                ></Control.text>
+                                <Errors
+                                    model=".name"
+                                    show={(field) => field.touched && !field.focus}
+                                    messages={{
+                                        required: "Vui lòng nhập đầy đủ thông tin!",
+                                        maxLength: "Hãy nhập dưới 15 ký tự.",
+                                    }}
+                                    className="text-danger"
+                                />
                             </FormGroup>
                             <FormGroup>
                                 <Label htmlFor="dateofbirt">Ngày sinh</Label>
-                                <Input value={dateofbirt} onChange={(e) => setDateofbirt(e.target.value)} type="date" id="dateofbirt" name="dateofbirt" required onBlur={(touch) => { return settouchdoB(true) }} />
+                                <Input value={dateofbirt} onChange={(e) => setDateofbirt(e.target.value)} type="date" id="dateofbirt" name="dateofbirt" required />
 
                             </FormGroup>
                             <FormGroup>
                                 <Label htmlFor="startdate">Ngày vào công ty</Label>
-                                <Input value={startdate} onChange={(e) => setStartdate(e.target.value)} type="date" id="startdate" name="startdate" required onBlur={(touch) => { return settouchstartDate(true) }} />
+                                <Input value={startdate} onChange={(e) => setStartdate(e.target.value)} type="date" id="startdate" name="startdate" required />
                             </FormGroup>
                             <FormGroup>
                                 <Label htmlFor="department">Phòng ban</Label>
@@ -162,22 +134,65 @@ const Staffs = (props) => {
                             </FormGroup>
                             <FormGroup>
                                 <Label htmlFor="scalesalary">Hệ số lương</Label>
-                                <Input value={scalesalary} onChange={(e) => setScalesalary(e.target.value)} type="text" id="scalesalary" name="scalesalary" required onBlur={(touch) => { return settouchsalaryScale(true) }} />
-                                <p className="text-danger">{error.salaryScale}</p>
+                                <Control.text
+                                    model=".salaryScale"
+                                    id="salaryScale"
+                                    name="salaryScale"
+                                    className="form-control"
+                                    validators={{ required, isNumber, maxnum }}
+                                ></Control.text>
+                                <Errors
+                                    model=".salaryScale"
+                                    show={(field) => field.touched && !field.focus}
+                                    messages={{
+                                        required: "Vui lòng nhập đầy đủ thông tin!",
+                                        isNumber: "Hãy nhập số.",
+                                        maxnum: "Số là số < 3 và > 1"
+                                    }}
+                                    className="text-danger"
+                                ></Errors>
                             </FormGroup>
                             <FormGroup>
                                 <Label htmlFor="halowin">Ngày nghỉ còn lại</Label>
-                                <Input value={halowin} onChange={(e) => setHalowin(e.target.value)} type="text" id="halowin" name="halowin" required onBlur={(touch) => { return settouchannualLeave(true) }} />
-                                <p className="text-danger">{error.annualLeave}</p>
+                                <Control.text
+                                    model=".annualLeave"
+                                    id="annualLeave"
+                                    name="annualLeave"
+                                    className="form-control"
+                                    validators={{ required, isNumber }}
+                                ></Control.text>
+                                <Errors
+                                    model=".annualLeave"
+                                    show={(field) => field.touched && !field.focus}
+                                    messages={{
+                                        required: "Vui lòng nhập đầy đủ thông tin!",
+                                        isNumber: "Hãy nhập số.",
+                                    }}
+                                    className="text-danger"
+                                ></Errors>
                             </FormGroup>
                             <FormGroup>
                                 <Label htmlFor="overtime">Số giờ đã làm thêm</Label>
-                                <Input value={overtime} onChange={(e) => setOvertime(e.target.value)} type="text" id="overtime" name="overtime" required onBlur={(touch) => { return settouchoverTime(true) }} />
-                                <p className="text-danger">{error.overTime}</p>
+                                <Control.text
+                                    model=".overTime"
+                                    id="overTime"
+                                    name="overTime"
+                                    className="form-control"
+                                    validators={{ required, isNumber }}
+                                ></Control.text>
+                                <Errors
+                                    model=".overTime"
+                                    show={(field) => field.touched && !field.focus}
+                                    messages={{
+                                        required: "Vui lòng nhập đầy đủ thông tin!",
+                                        isNumber: "Hãy nhập số.",
+                                    }}
+                                    className="text-danger"
+                                ></Errors>
                             </FormGroup>
 
                             <Button type="submit" value="submit" color="primary">Thêm mới</Button>
-                        </Form>
+                        </LocalForm>
                     </ModalBody>
                 </Modal>
 
