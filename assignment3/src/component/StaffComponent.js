@@ -18,7 +18,6 @@ function RenderStaffList({ staff, onClick, }) {
 
 const Staffs = (props) => {
     const storageStaffs = JSON.parse(localStorage.getItem('staffs'))
-    console.log(storageStaffs);
     const [staffs, setStaffs] = useState(storageStaffs || props.staffs)
     const [modal, setModal] = useState(false);
     const toggleModal = () => {
@@ -105,15 +104,12 @@ const Staffs = (props) => {
 
             return storageStaffs || newStaffs
         })
-
-        console.log(newStaff);
     }
 
     const handleSearch = (event) => {
         event.preventDefault();
         const searchname = this.searchname.value.toLowerCase()
         const staffsearch = (storageStaffs || staffs).filter(staff => staff.name.toLowerCase().split(' ').find(item => item === searchname) !== undefined);
-        console.log(staffsearch);
         setStaffs(staffsearch)
     }
 
