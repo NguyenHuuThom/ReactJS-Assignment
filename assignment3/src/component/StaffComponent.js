@@ -64,9 +64,10 @@ const Staffs = (props) => {
         })
     }
 
+    let searchnameee;
     const handleSearch = (event) => {
         event.preventDefault();
-        const searchname = this.searchname.value.toLowerCase()
+        const searchname = searchnameee.value.toLowerCase()
         const staffsearch = (storageStaffs || staffs).filter(staff => staff.name.toLowerCase().split(' ').find(item => item === searchname) !== undefined);
         setStaffs(staffsearch)
     }
@@ -204,7 +205,7 @@ const Staffs = (props) => {
                                 id="searchname"
                                 name="searchname"
                                 placeholder="Tìm theo tên"
-                                innerRef={(input) => this.searchname = input}
+                                innerRef={(input) => searchnameee = input}
                             />
                             <Button
                                 className='ml-2'
