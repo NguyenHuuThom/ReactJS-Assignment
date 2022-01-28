@@ -18,8 +18,8 @@ function RenderStaffList({ staff, onClick, }) {
 
 const Staffs = (props) => {
     const storageStaffs = JSON.parse(localStorage.getItem('staffs'))
-    console.log(storageStaffs);
-    const [staffs, setStaffs] = useState(storageStaffs || props.staffs)
+
+    const [staffs, setStaffs] = useState(storageStaffs || props.staffs);
     const [modal, setModal] = useState(false);
     const toggleModal = () => {
         setModal(!modal);
@@ -109,9 +109,10 @@ const Staffs = (props) => {
         console.log(newStaff);
     }
 
+    let searchnameee;
     const handleSearch = (event) => {
         event.preventDefault();
-        const searchname = this.searchname.value.toLowerCase()
+        const searchname = searchnameee.value.toLowerCase()
         const staffsearch = (storageStaffs || staffs).filter(staff => staff.name.toLowerCase().split(' ').find(item => item === searchname) !== undefined);
         console.log(staffsearch);
         setStaffs(staffsearch)
@@ -193,7 +194,7 @@ const Staffs = (props) => {
                                 id="searchname"
                                 name="searchname"
                                 placeholder="Tìm theo tên"
-                                innerRef={(input) => this.searchname = input}
+                                innerRef={(input) => (searchnameee = input)}
                             />
                             <Button
                                 className='ml-2'
