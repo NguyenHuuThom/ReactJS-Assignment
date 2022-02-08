@@ -23,6 +23,7 @@ import { Loading } from "./LoadingComponent";
 const required = (value) => value && value.length > 0;
 const maxlength = (len) => (value) => !(value) || (value.length <= len);
 const isNumber = (value) => !(value) || !isNaN(Number(value));
+const maxnum = (value) => value >= 1 && value <= 3;
 
 const StaffList = ({ staffs, postStaff, isLoading, errMes }) => {
     // set state for name & search for search function
@@ -78,9 +79,9 @@ const StaffList = ({ staffs, postStaff, isLoading, errMes }) => {
                         key={staff.id}
                     >
                         <div key={staff.id}>
-                            <Card tag="li" className="mt-2 p-1">
-                                <CardImg src='/asset/images/alberto.png'></CardImg>
-                                <CardText>{staff.name}</CardText>
+                            <Card className="bg-info mt-4">
+                                <CardImg width="100%" src={staff.image} alt={staff.name} />
+                                <CardTitle className="text-center m-1 text-white" heading="true">{staff.name}</CardTitle>
                             </Card>
                         </div>
                     </Link>
@@ -116,7 +117,7 @@ const StaffList = ({ staffs, postStaff, isLoading, errMes }) => {
                         className="btn btn-primary"
                         onClick={() => setModalOpen(!modalOpen)}
                     >
-                        +
+                        <span className="fa fa-plus fa-lg"></span>
                     </button>
                 </div>
                 {/* Seach form */}
@@ -137,7 +138,7 @@ const StaffList = ({ staffs, postStaff, isLoading, errMes }) => {
                             onClick={(event) => handleSearch(event, Name)}
                             className="btn btn-primary"
                         >
-                            Tìm
+                            <span className="fa fa-search fa-lg"></span>
                         </button>
                     </form>
                 </div>
@@ -187,7 +188,7 @@ const StaffList = ({ staffs, postStaff, isLoading, errMes }) => {
                                         model=".name"
                                         show={(field) => field.touched && !field.focus}
                                         messages={{
-                                            required: "Yêu cầu nhập.",
+                                            required: "Vui lòng nhập đầy đủ thông tin!",
                                             maxLength: "Hãy nhập dưới 15 ký tự.",
                                         }}
                                         className="text-danger"
@@ -256,14 +257,15 @@ const StaffList = ({ staffs, postStaff, isLoading, errMes }) => {
                                         id="salaryScale"
                                         name="salaryScale"
                                         className="form-control"
-                                        validators={{ required, isNumber }}
+                                        validators={{ required, isNumber, maxnum }}
                                     ></Control.text>
                                     <Errors
                                         model=".salaryScale"
                                         show={(field) => field.touched && !field.focus}
                                         messages={{
-                                            required: "Yêu cầu nhập.",
-                                            isNumber: "Hãy nhập số.",
+                                            required: "Vui lòng nhập đầy đủ thông tin!",
+                                            isNumber: "Hãy nhập số",
+                                            maxnum: "Hãy nhập số nhỏ hơn hoặc bằng 3",
                                         }}
                                         className="text-danger"
                                     ></Errors>
@@ -285,8 +287,8 @@ const StaffList = ({ staffs, postStaff, isLoading, errMes }) => {
                                         model=".annualLeave"
                                         show={(field) => field.touched && !field.focus}
                                         messages={{
-                                            required: "Yêu cầu nhập.",
-                                            isNumber: "Hãy nhập số.",
+                                            required: "Vui lòng nhập đầy đủ thông tin!",
+                                            isNumber: "Hãy nhập số",
                                         }}
                                         className="text-danger"
                                     ></Errors>
@@ -308,8 +310,8 @@ const StaffList = ({ staffs, postStaff, isLoading, errMes }) => {
                                         model=".overTime"
                                         show={(field) => field.touched && !field.focus}
                                         messages={{
-                                            required: "Yêu cầu nhập.",
-                                            isNumber: "Hãy nhập số.",
+                                            required: "Vui lòng nhập đầy đủ thông tin!",
+                                            isNumber: "Hãy nhập số",
                                         }}
                                         className="text-danger"
                                     ></Errors>
