@@ -1,229 +1,333 @@
-import React, { useState } from 'react';
-import { Card, CardImg, CardTitle, Breadcrumb, BreadcrumbItem, Label, Button, Row, Col, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, } from 'reactstrap';
-import { STAFFS, DEPARTMENTS } from '../shared/staffs';
-import { Link } from 'react-router-dom';
-import { Control, LocalForm, Errors, } from 'react-redux-form';
+import React, { useState } from "react";
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    Card,
+    CardImg,
+    CardText,
+    CardTitle,
+    Input,
+    Button,
+    Modal,
+    ModalBody,
+    ModalHeader,
+    Label,
+    Col,
+    Row,
+} from "reactstrap";
+import { Link } from "react-router-dom";
+import { Control, LocalForm, Errors } from 'react-redux-form';
+import { Loading } from "./LoadingComponent";
 
 // form validation 
 const required = (value) => value && value.length > 0;
 const maxlength = (len) => (value) => !(value) || (value.length <= len);
 const isNumber = (value) => !(value) || !isNaN(Number(value));
-const maxnum = (value) => value >= 1 && value <= 3;
 
-function RenderStaffList({ staff, onClick, }) {
-    return (
-        <Card className="bg-info">
-            <Link to={`/staff/${staff.id}`}>
-                <CardImg width="100%" src={staff.image} alt={staff.name} />
-                <CardTitle className="text-center m-1 text-white" heading="true">{staff.name}</CardTitle>
-            </Link>
-        </Card>
-    )
-}
+const StaffList = ({ staffs, postStaff, isLoading, errMes }) => {
+    // set state for name & search for search function
+    const [Name, setName] = useState(null);
+    const [SEARCH, setSEARCH] = useState(null);
 
-const Staffs = (props) => {
-    const storageStaffs = JSON.parse(localStorage.getItem('staffs'))
-    const [staffs, setStaffs] = useState(storageStaffs || props.staffs)
-    const [modal, setModal] = useState(false);
-    const toggleModal = () => {
-        setModal(!modal);
-    }
+    // set state for doB & startDate
+    const [doB, setdoB] = useState('');
+    const [startDate, setstartDate] = useState('');
 
-    const [name, setName] = useState('')
-    const [dateofbirt, setDateofbirt] = useState('')
-    const [startdate, setStartdate] = useState('')
-    const [department, setDepartment] = useState('Sale')
-    const [scalesalary, setScalesalary] = useState('')
-    const [halowin, setHalowin] = useState('')
-    const [overtime, setOvertime] = useState('')
+    // set state to toggle add modal
+    const [modalOpen, setModalOpen] = useState(false);
 
-    const handleAdd = (values) => {
-        toggleModal()
-
-        const newStaff = {
-            id: staffs.length,
-            name: values.name,
-            doB: dateofbirt,
-            startDate: startdate,
-            department: department,
-            salaryScale: values.salaryScale,
-            annualLeave: values.annualLeave,
-            overTime: values.overTime,
-            image: '/assets/images/alberto.png',
-        }
-
-
-        setStaffs(prev => {
-            const newStaffs = [...prev, newStaff]
-
-            //save to local storage
-            const jsonStaffs = JSON.stringify(newStaffs)
-            localStorage.setItem('staffs', jsonStaffs)
-
-            return storageStaffs || newStaffs
-        })
-    }
-
-    let searchnameee;
-    const handleSearch = (event) => {
-        event.preventDefault();
-        const searchname = searchnameee.value.toLowerCase()
-        const staffsearch = (storageStaffs || staffs).filter(staff => staff.name.toLowerCase().split(' ').find(item => item === searchname) !== undefined);
-        setStaffs(staffsearch)
-    }
-
-    const staff = (staffs).map((staff) => {
+    // render full staff list
+    const STAFFS = staffs.map((staff) => {
         return (
-            <div key={staff.id} className="col-12 col-sm-6 col-md-4 col-xl-2 mt-4">
-                <RenderStaffList staff={staff} onClick={props.onClick} />
-            </div>
+            <Link
+                to={`/staff/${staff.id}`}
+                className="col col-6 col-md-4 col-lg-2 text-dark mb-2"
+                style={{ textDecoration: "none" }}
+                key={staff.id}
+            >
+                <div key={staff.id}>
+                    <Card className="bg-info mt-4">
+                        <CardImg width="100%" src={staff.image} alt={staff.name} />
+                        <CardTitle className="text-center m-1 text-white" heading="true">{staff.name}</CardTitle>
+                    </Card>
+                </div>
+            </Link>
         );
-    })
+    });
 
+    // render search by name results
+    const handleSearch = (event, Name) => {
+        event.preventDefault();
+        const name = Name.value;
+        const X = staffs
+            .filter((staff) => {
+                if (name === "") {
+                    return staff;
+                } else {
+                    if (staff.name.toLowerCase().includes(name.toLowerCase())) {
+                        return staff;
+                    }
+                }
+            })
+            .map((staff) => {
+                return (
+                    <Link
+                        to={`/staff/${staff.id}`}
+                        className="col col-6 col-md-4 col-lg-2 text-dark mb-2"
+                        style={{ textDecoration: "none" }}
+                        key={staff.id}
+                    >
+                        <div key={staff.id}>
+                            <Card tag="li" className="mt-2 p-1">
+                                <CardImg src='/asset/images/alberto.png'></CardImg>
+                                <CardText>{staff.name}</CardText>
+                            </Card>
+                        </div>
+                    </Link>
+                );
+            });
+        setSEARCH(X);
+        Name.value = "";
+    };
+
+    // handle add submit
+    const handleSubmit = (values) => {
+
+        setModalOpen(!modalOpen);
+
+        const isoDate = new Date().toISOString();
+        const newTime = isoDate.slice(10);
+        const timedDoB = doB !== '' ? doB.concat(newTime) : null;
+        const timedStartDate = startDate !== '' ? startDate.concat(newTime) : null;
+
+        postStaff(values.name, timedDoB, timedStartDate, values.departmentId, values.salaryScale, values.annualLeave, values.overTime)
+    };
+
+    // return part
     return (
         <div className="container">
             <div className="row">
                 <Breadcrumb>
                     <BreadcrumbItem><Link to="/staff">Nhân Viên</Link></BreadcrumbItem>
                 </Breadcrumb>
+                {/* Add new button */}
+                <div className="col-md-1">
+                    <button
+                        className="btn btn-primary"
+                        onClick={() => setModalOpen(!modalOpen)}
+                    >
+                        +
+                    </button>
+                </div>
+                {/* Seach form */}
+                <div className="col-md-6">
+                    <form className="form-inline">
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            placeholder="Tìm nhân viên theo tên"
+                            ref={(input) => {
+                                return setName(input);
+                            }}
+                            className="form-control mr-2 mb-1 mt-1"
+                        ></input>
+                        <button
+                            type="submit"
+                            onClick={(event) => handleSearch(event, Name)}
+                            className="btn btn-primary"
+                        >
+                            Tìm
+                        </button>
+                    </form>
+                </div>
+            </div>
 
+            {/* Return full staffs list if user has not performed search, return message if there is no search results, return results if there is results */}
+            <div className="row">
+                {isLoading ? <Loading />
+                    : (errMes != null) ? errMes
+                        : SEARCH === null ? STAFFS
+                            : SEARCH.length === 0 ? "Không tìm thấy nhân viên nào"
+                                : SEARCH}
+            </div>
 
-                <Button outline onClick={toggleModal} color="primary">
-                    <span className="fa fa fa-plus fa-lg"></span>
-                </Button>
-                <Modal isOpen={modal} toggle={toggleModal}>
-                    <ModalHeader toggle={toggleModal}>Thêm nhân viên</ModalHeader>
+            {/* Modal */}
+
+            <div>
+                <Modal
+                    isOpen={modalOpen}
+                    toggle={(modalOpen) => setModalOpen(!modalOpen)}
+                >
+                    <ModalHeader
+                        isOpen={modalOpen}
+                        toggle={(modalOpen) => setModalOpen(!modalOpen)}
+                    >
+                        Thêm nhân viên
+                    </ModalHeader>
                     <ModalBody>
-                        <LocalForm onSubmit={(value) => handleAdd(value)}>
-                            <FormGroup>
-                                <Label htmlFor="name">Họ và tên</Label>
-                                <Control.text
-                                    model=".name"
-                                    id="name"
-                                    name="name"
-                                    className="form-control"
-                                    validators={{ required, maxLength: maxlength(15) }}
-                                ></Control.text>
-                                <Errors
-                                    model=".name"
-                                    show={(field) => field.touched && !field.focus}
-                                    messages={{
-                                        required: "Vui lòng nhập đầy đủ thông tin!",
-                                        maxLength: "Hãy nhập dưới 15 ký tự.",
-                                    }}
-                                    className="text-danger"
-                                />
-                            </FormGroup>
-                            <FormGroup>
-                                <Label htmlFor="dateofbirt">Ngày sinh</Label>
-                                <Input value={dateofbirt} onChange={(e) => setDateofbirt(e.target.value)} type="date" id="dateofbirt" name="dateofbirt" required />
-
-                            </FormGroup>
-                            <FormGroup>
-                                <Label htmlFor="startdate">Ngày vào công ty</Label>
-                                <Input value={startdate} onChange={(e) => setStartdate(e.target.value)} type="date" id="startdate" name="startdate" required />
-                            </FormGroup>
-                            <FormGroup>
-                                <Label htmlFor="department">Phòng ban</Label>
-                                <Input value={department} onChange={(e) => setDepartment(e.target.value)} type="select" id="department" name="department" required >
-                                    <option >Sale</option>
-                                    <option >IT</option>
-                                    <option >HR</option>
-                                    <option >Finance</option>
-                                    <option >Marketing</option>
-                                </Input>
-                            </FormGroup>
-                            <FormGroup>
-                                <Label htmlFor="scalesalary">Hệ số lương</Label>
-                                <Control.text
-                                    model=".salaryScale"
-                                    id="salaryScale"
-                                    name="salaryScale"
-                                    className="form-control"
-                                    validators={{ required, isNumber, maxnum }}
-                                ></Control.text>
-                                <Errors
-                                    model=".salaryScale"
-                                    show={(field) => field.touched && !field.focus}
-                                    messages={{
-                                        required: "Vui lòng nhập đầy đủ thông tin!",
-                                        isNumber: "Hãy nhập số.",
-                                        maxnum: "Số là số < 3 và > 1"
-                                    }}
-                                    className="text-danger"
-                                ></Errors>
-                            </FormGroup>
-                            <FormGroup>
-                                <Label htmlFor="halowin">Ngày nghỉ còn lại</Label>
-                                <Control.text
-                                    model=".annualLeave"
-                                    id="annualLeave"
-                                    name="annualLeave"
-                                    className="form-control"
-                                    validators={{ required, isNumber }}
-                                ></Control.text>
-                                <Errors
-                                    model=".annualLeave"
-                                    show={(field) => field.touched && !field.focus}
-                                    messages={{
-                                        required: "Vui lòng nhập đầy đủ thông tin!",
-                                        isNumber: "Hãy nhập số.",
-                                    }}
-                                    className="text-danger"
-                                ></Errors>
-                            </FormGroup>
-                            <FormGroup>
-                                <Label htmlFor="overtime">Số giờ đã làm thêm</Label>
-                                <Control.text
-                                    model=".overTime"
-                                    id="overTime"
-                                    name="overTime"
-                                    className="form-control"
-                                    validators={{ required, isNumber }}
-                                ></Control.text>
-                                <Errors
-                                    model=".overTime"
-                                    show={(field) => field.touched && !field.focus}
-                                    messages={{
-                                        required: "Vui lòng nhập đầy đủ thông tin!",
-                                        isNumber: "Hãy nhập số.",
-                                    }}
-                                    className="text-danger"
-                                ></Errors>
-                            </FormGroup>
-
-                            <Button type="submit" value="submit" color="primary">Thêm mới</Button>
+                        <LocalForm
+                            onSubmit={(values) => {
+                                handleSubmit(values);
+                            }}
+                        >
+                            <Row className="mt-2">
+                                <Label htmlFor="name" md={3}>
+                                    Tên nhân viên
+                                </Label>
+                                <Col md={9}>
+                                    <Control.text
+                                        model=".name"
+                                        id="name"
+                                        name="name"
+                                        className="form-control"
+                                        validators={{ required, maxLength: maxlength(15) }}
+                                    ></Control.text>
+                                    <Errors
+                                        model=".name"
+                                        show={(field) => field.touched && !field.focus}
+                                        messages={{
+                                            required: "Yêu cầu nhập.",
+                                            maxLength: "Hãy nhập dưới 15 ký tự.",
+                                        }}
+                                        className="text-danger"
+                                    />
+                                </Col>
+                            </Row>
+                            <Row className="mt-2">
+                                <Label htmlFor="doB" md={3}>
+                                    Ngày sinh
+                                </Label>
+                                <Col md={9}>
+                                    <Input
+                                        type="date"
+                                        id="doB"
+                                        name="doB"
+                                        value={doB}
+                                        onChange={(event) => {
+                                            return setdoB(event.target.value);
+                                        }}
+                                    ></Input>
+                                </Col>
+                            </Row>
+                            <Row className="mt-2">
+                                <Label htmlFor="startDate" md={3}>
+                                    Ngày bắt đầu
+                                </Label>
+                                <Col md={9}>
+                                    <Input
+                                        type="date"
+                                        id="startDate"
+                                        name="startDate"
+                                        value={startDate}
+                                        onChange={(event) => {
+                                            return setstartDate(event.target.value);
+                                        }}
+                                    ></Input>
+                                </Col>
+                            </Row>
+                            <Row className="mt-2">
+                                <Label htmlFor="departmentId" md={3}>
+                                    Phòng ban
+                                </Label>
+                                <Col md={9}>
+                                    <Control.select
+                                        model=".departmentId"
+                                        id="departmentId"
+                                        name="departmentId"
+                                        className="form-control"
+                                        defaultValue="Dept01"
+                                    >
+                                        <option value="Dept01">Sale</option>
+                                        <option value="Dept02">HR</option>
+                                        <option value="Dept03">Marketing</option>
+                                        <option value="Dept04">IT</option>
+                                        <option value="Dept05">Finance</option>
+                                    </Control.select>
+                                </Col>
+                            </Row>
+                            <Row className="mt-2">
+                                <Label htmlFor="salaryScale" md={3}>
+                                    Hệ số lương
+                                </Label>
+                                <Col md={9}>
+                                    <Control.text
+                                        model=".salaryScale"
+                                        id="salaryScale"
+                                        name="salaryScale"
+                                        className="form-control"
+                                        validators={{ required, isNumber }}
+                                    ></Control.text>
+                                    <Errors
+                                        model=".salaryScale"
+                                        show={(field) => field.touched && !field.focus}
+                                        messages={{
+                                            required: "Yêu cầu nhập.",
+                                            isNumber: "Hãy nhập số.",
+                                        }}
+                                        className="text-danger"
+                                    ></Errors>
+                                </Col>
+                            </Row>
+                            <Row className="mt-2">
+                                <Label htmlFor="annualLeave" md={3}>
+                                    Nghỉ phép
+                                </Label>
+                                <Col md={9}>
+                                    <Control.text
+                                        model=".annualLeave"
+                                        id="annualLeave"
+                                        name="annualLeave"
+                                        className="form-control"
+                                        validators={{ required, isNumber }}
+                                    ></Control.text>
+                                    <Errors
+                                        model=".annualLeave"
+                                        show={(field) => field.touched && !field.focus}
+                                        messages={{
+                                            required: "Yêu cầu nhập.",
+                                            isNumber: "Hãy nhập số.",
+                                        }}
+                                        className="text-danger"
+                                    ></Errors>
+                                </Col>
+                            </Row>
+                            <Row className="mt-2">
+                                <Label htmlFor="overTime" md={3}>
+                                    Làm thêm giờ
+                                </Label>
+                                <Col md={9}>
+                                    <Control.text
+                                        model=".overTime"
+                                        id="overTime"
+                                        name="overTime"
+                                        className="form-control"
+                                        validators={{ required, isNumber }}
+                                    ></Control.text>
+                                    <Errors
+                                        model=".overTime"
+                                        show={(field) => field.touched && !field.focus}
+                                        messages={{
+                                            required: "Yêu cầu nhập.",
+                                            isNumber: "Hãy nhập số.",
+                                        }}
+                                        className="text-danger"
+                                    ></Errors>
+                                </Col>
+                            </Row>
+                            <Row className="mt-2">
+                                <Col md={{ size: 3, offset: 3 }}>
+                                    <Button type="submit" className="btn btn-info">
+                                        Thêm
+                                    </Button>
+                                </Col>
+                            </Row>
                         </LocalForm>
                     </ModalBody>
                 </Modal>
-
-                <Form className="ml-auto mt-4" onSubmit={handleSearch}>
-                    <FormGroup row>
-                        <Col md={12} className='d-flex'>
-                            <Input
-                                type="text"
-                                id="searchname"
-                                name="searchname"
-                                placeholder="Tìm theo tên"
-                                innerRef={(input) => searchnameee = input}
-                            />
-                            <Button
-                                className='ml-2'
-                                outline
-                                type="submit"
-                                value="submit"
-                                color="primary">
-                                <span className="fa fa-search fa-lg"></span>
-                            </Button>
-                        </Col>
-                    </FormGroup>
-                </Form>
-            </div>
-            <div className="row">
-                {staff}
             </div>
         </div>
     );
-}
+};
 
-export default Staffs
+export default StaffList;

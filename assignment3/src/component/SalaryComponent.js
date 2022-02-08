@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardText, CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { Loading } from "./LoadingComponent";
 
 function RenderStaffSalary({ staff }) {
     const basicSalary = 3000000;
@@ -19,7 +20,7 @@ function RenderStaffSalary({ staff }) {
 }
 
 function Salary(props) {
-    const staffs = (props.staffs).map((staff) => {
+    const staffs = (props.staffsSalaries).map((staff) => {
         return (
             <div key={staff.id} className="col-12 col-sm-6 col-md-6 col-lg-4 mt-4">
                 <RenderStaffSalary staff={staff} />

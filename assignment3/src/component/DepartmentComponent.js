@@ -14,8 +14,10 @@ function RenderDepartment({ department }) {
 function Department(props) {
     const departments = props.departments.map((department) => {
         return (
-            <div key={department.id} className="col-12 col-sm-6 col-md-6 col-lg-4 mt-4">
-                <RenderDepartment department={department} />
+            <div key={department.id} className=" col-12 col-md-6 col-lg-4 mt-4">
+                <Link style={{ textDecoration: "none" }} to={`/department/${department.id}`}>
+                    <RenderDepartment department={department} />
+                </Link>
             </div>
         );
     });
