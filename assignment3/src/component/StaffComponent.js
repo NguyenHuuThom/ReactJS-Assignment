@@ -14,6 +14,7 @@ import {
     Label,
     Col,
     Row,
+    FormGroup,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import { Control, LocalForm, Errors } from 'react-redux-form';
@@ -172,158 +173,149 @@ const StaffList = ({ staffs, postStaff, isLoading, errMes }) => {
                                 handleSubmit(values);
                             }}
                         >
-                            <Row className="mt-2">
-                                <Label htmlFor="name" md={3}>
-                                    Tên nhân viên
+                            <FormGroup>
+                                <Label htmlFor="name" >
+                                    Họ và tên
                                 </Label>
-                                <Col md={9}>
-                                    <Control.text
-                                        model=".name"
-                                        id="name"
-                                        name="name"
-                                        className="form-control"
-                                        validators={{ required, maxLength: maxlength(15) }}
-                                    ></Control.text>
-                                    <Errors
-                                        model=".name"
-                                        show={(field) => field.touched && !field.focus}
-                                        messages={{
-                                            required: "Vui lòng nhập đầy đủ thông tin!",
-                                            maxLength: "Hãy nhập dưới 15 ký tự.",
-                                        }}
-                                        className="text-danger"
-                                    />
-                                </Col>
-                            </Row>
-                            <Row className="mt-2">
-                                <Label htmlFor="doB" md={3}>
+
+                                <Control.text
+                                    model=".name"
+                                    id="name"
+                                    name="name"
+                                    className="form-control"
+                                    validators={{ required, maxLength: maxlength(15) }}
+                                ></Control.text>
+                                <Errors
+                                    model=".name"
+                                    show={(field) => field.touched && !field.focus}
+                                    messages={{
+                                        required: "Vui lòng nhập đầy đủ thông tin!",
+                                        maxLength: "Hãy nhập dưới 15 ký tự.",
+                                    }}
+                                    className="text-danger"
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label htmlFor="doB" >
                                     Ngày sinh
                                 </Label>
-                                <Col md={9}>
-                                    <Input
-                                        type="date"
-                                        id="doB"
-                                        name="doB"
-                                        value={doB}
-                                        onChange={(event) => {
-                                            return setdoB(event.target.value);
-                                        }}
-                                    ></Input>
-                                </Col>
-                            </Row>
-                            <Row className="mt-2">
-                                <Label htmlFor="startDate" md={3}>
-                                    Ngày bắt đầu
+
+                                <Input
+                                    type="date"
+                                    id="doB"
+                                    name="doB"
+                                    value={doB}
+                                    onChange={(event) => {
+                                        return setdoB(event.target.value);
+                                    }}
+                                ></Input>
+                            </FormGroup>
+                            <FormGroup>
+                                <Label htmlFor="startDate" >
+                                    Ngày vào công ty
                                 </Label>
-                                <Col md={9}>
-                                    <Input
-                                        type="date"
-                                        id="startDate"
-                                        name="startDate"
-                                        value={startDate}
-                                        onChange={(event) => {
-                                            return setstartDate(event.target.value);
-                                        }}
-                                    ></Input>
-                                </Col>
-                            </Row>
-                            <Row className="mt-2">
-                                <Label htmlFor="departmentId" md={3}>
+
+                                <Input
+                                    type="date"
+                                    id="startDate"
+                                    name="startDate"
+                                    value={startDate}
+                                    onChange={(event) => {
+                                        return setstartDate(event.target.value);
+                                    }}
+                                ></Input>
+                            </FormGroup>
+                            <FormGroup>
+                                <Label htmlFor="departmentId" >
                                     Phòng ban
                                 </Label>
-                                <Col md={9}>
-                                    <Control.select
-                                        model=".departmentId"
-                                        id="departmentId"
-                                        name="departmentId"
-                                        className="form-control"
-                                        defaultValue="Dept01"
-                                    >
-                                        <option value="Dept01">Sale</option>
-                                        <option value="Dept02">HR</option>
-                                        <option value="Dept03">Marketing</option>
-                                        <option value="Dept04">IT</option>
-                                        <option value="Dept05">Finance</option>
-                                    </Control.select>
-                                </Col>
-                            </Row>
-                            <Row className="mt-2">
-                                <Label htmlFor="salaryScale" md={3}>
+
+                                <Control.select
+                                    model=".departmentId"
+                                    id="departmentId"
+                                    name="departmentId"
+                                    className="form-control"
+                                    defaultValue="Dept01"
+                                >
+                                    <option value="Dept01">Sale</option>
+                                    <option value="Dept02">HR</option>
+                                    <option value="Dept03">Marketing</option>
+                                    <option value="Dept04">IT</option>
+                                    <option value="Dept05">Finance</option>
+                                </Control.select>
+                            </FormGroup>
+                            <FormGroup>
+                                <Label htmlFor="salaryScale" >
                                     Hệ số lương
                                 </Label>
-                                <Col md={9}>
-                                    <Control.text
-                                        model=".salaryScale"
-                                        id="salaryScale"
-                                        name="salaryScale"
-                                        className="form-control"
-                                        validators={{ required, isNumber, maxnum }}
-                                    ></Control.text>
-                                    <Errors
-                                        model=".salaryScale"
-                                        show={(field) => field.touched && !field.focus}
-                                        messages={{
-                                            required: "Vui lòng nhập đầy đủ thông tin!",
-                                            isNumber: "Hãy nhập số",
-                                            maxnum: "Hãy nhập số nhỏ hơn hoặc bằng 3",
-                                        }}
-                                        className="text-danger"
-                                    ></Errors>
-                                </Col>
-                            </Row>
-                            <Row className="mt-2">
-                                <Label htmlFor="annualLeave" md={3}>
-                                    Nghỉ phép
+
+                                <Control.text
+                                    model=".salaryScale"
+                                    id="salaryScale"
+                                    name="salaryScale"
+                                    className="form-control"
+                                    validators={{ required, isNumber, maxnum }}
+                                ></Control.text>
+                                <Errors
+                                    model=".salaryScale"
+                                    show={(field) => field.touched && !field.focus}
+                                    messages={{
+                                        required: "Vui lòng nhập đầy đủ thông tin!",
+                                        isNumber: "Hãy nhập số",
+                                        maxnum: "Hãy nhập số nhỏ hơn hoặc bằng 3",
+                                    }}
+                                    className="text-danger"
+                                ></Errors>
+                            </FormGroup>
+                            <FormGroup>
+                                <Label htmlFor="annualLeave" >
+                                    Số ngày nghỉ còn lại
                                 </Label>
-                                <Col md={9}>
-                                    <Control.text
-                                        model=".annualLeave"
-                                        id="annualLeave"
-                                        name="annualLeave"
-                                        className="form-control"
-                                        validators={{ required, isNumber }}
-                                    ></Control.text>
-                                    <Errors
-                                        model=".annualLeave"
-                                        show={(field) => field.touched && !field.focus}
-                                        messages={{
-                                            required: "Vui lòng nhập đầy đủ thông tin!",
-                                            isNumber: "Hãy nhập số",
-                                        }}
-                                        className="text-danger"
-                                    ></Errors>
-                                </Col>
-                            </Row>
-                            <Row className="mt-2">
-                                <Label htmlFor="overTime" md={3}>
-                                    Làm thêm giờ
+
+                                <Control.text
+                                    model=".annualLeave"
+                                    id="annualLeave"
+                                    name="annualLeave"
+                                    className="form-control"
+                                    validators={{ required, isNumber }}
+                                ></Control.text>
+                                <Errors
+                                    model=".annualLeave"
+                                    show={(field) => field.touched && !field.focus}
+                                    messages={{
+                                        required: "Vui lòng nhập đầy đủ thông tin!",
+                                        isNumber: "Hãy nhập số",
+                                    }}
+                                    className="text-danger"
+                                ></Errors>
+                            </FormGroup>
+                            <FormGroup>
+                                <Label htmlFor="overTime" >
+                                    Số giờ làm thêm
                                 </Label>
-                                <Col md={9}>
-                                    <Control.text
-                                        model=".overTime"
-                                        id="overTime"
-                                        name="overTime"
-                                        className="form-control"
-                                        validators={{ required, isNumber }}
-                                    ></Control.text>
-                                    <Errors
-                                        model=".overTime"
-                                        show={(field) => field.touched && !field.focus}
-                                        messages={{
-                                            required: "Vui lòng nhập đầy đủ thông tin!",
-                                            isNumber: "Hãy nhập số",
-                                        }}
-                                        className="text-danger"
-                                    ></Errors>
-                                </Col>
-                            </Row>
-                            <Row className="mt-2">
-                                <Col md={{ size: 3, offset: 3 }}>
-                                    <Button type="submit" className="btn btn-info">
-                                        Thêm
-                                    </Button>
-                                </Col>
-                            </Row>
+
+                                <Control.text
+                                    model=".overTime"
+                                    id="overTime"
+                                    name="overTime"
+                                    className="form-control"
+                                    validators={{ required, isNumber }}
+                                ></Control.text>
+                                <Errors
+                                    model=".overTime"
+                                    show={(field) => field.touched && !field.focus}
+                                    messages={{
+                                        required: "Vui lòng nhập đầy đủ thông tin!",
+                                        isNumber: "Hãy nhập số",
+                                    }}
+                                    className="text-danger"
+                                ></Errors>
+                            </FormGroup>
+                            <FormGroup>
+                                <Button type="submit" className="btn btn-info">
+                                    Thêm nhân viên
+                                </Button>
+                            </FormGroup>
                         </LocalForm>
                     </ModalBody>
                 </Modal>
