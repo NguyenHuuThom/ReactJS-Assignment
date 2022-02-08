@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Breadcrumb, BreadcrumbItem, Button, CardImg, Modal, ModalBody, ModalHeader, Row, Label, Col, Input } from "reactstrap";
+import { Breadcrumb, BreadcrumbItem, Button, CardImg, Modal, ModalBody, ModalHeader, Row, Label, Col, Input, Card, CardGroup, CardText, CardTitle } from "reactstrap";
 import { Link, withRouter } from 'react-router-dom';
 import dateFormat from "dateformat";
 import { Loading } from './LoadingComponent';
@@ -98,36 +98,32 @@ class Staff extends Component {
 
         return (
             <FadeTransform in transformProps={{ exitTransform: 'scale(0.5) translateY(-50%)' }}>
-                <div className="mb-4 row mt-4">
-                    <div className="col-lg-2"></div>
-                    <div className="col-12 col-lg-3">
-                        <CardImg src='/asset/images/alberto.png' className="staff-card-img"></CardImg>
-                    </div>
-                    <div className="col-lg-1"></div>
-                    <div className="col-12 col-lg-6">
-                        <h5>Họ và tên: {staff.name}</h5>
-
-                        {/* Format date to more easy-to-read date format */}
-                        <p>Ngày sinh: {staff.doB ? dateFormat(staff.doB, "dd/mm/yyyy") : 'N/A'}</p>
-                        <p>Ngày vào công ty: {staff.startDate ? dateFormat(staff.startDate, "dd/mm/yyyy") : 'N/A'}</p>
-                        <p>Phòng ban: {depName}</p>
-                        <p>Số ngày nghỉ còn lại: {staff.annualLeave}</p>
-                        <p>Số ngày đã làm thêm: {staff.overTime}</p>
+                <CardGroup>
+                    <Card className="bg-info p-2 col-sm-4 col-md-3 col-lg-4 m-0" >
+                        <CardImg src={staff.image} alt={staff.name} />
+                    </Card>
+                    <Card className="bg-info text-white p-2">
+                        <CardTitle><b>{`Họ và tên: ${staff.name}`}</b></CardTitle>
+                        <CardText>{`Ngày sinh: ${staff.doB ? dateFormat(staff.doB, "dd/mm/yyyy") : 'N/A'}`}</CardText>
+                        <CardText>{`Ngày vào công ty: ${staff.startDate ? dateFormat(staff.startDate, "dd/mm/yyyy") : 'N/A'}`}</CardText>
+                        <CardText>{`Phòng ban: ${depName}`}</CardText>
+                        <CardText>{`Ngày nghỉ còn lại: ${staff.annualLeave}`}</CardText>
+                        <CardText>{`Số giờ đã làm thêm : ${staff.overTime}`}</CardText>
                         <Button
-                            className="btn btn-primary mt-2"
+                            className="btn btn-primary"
                             onClick={this.setModalOpen1}
                         >
                             Xóa nhân viên
                         </Button>
 
                         <Button
-                            className="btn btn-primary mt-2 ml-1"
+                            className="btn btn-primary mt-3"
                             onClick={this.setModalOpen2}
                         >
                             Sửa thông tin
                         </Button>
-                    </div>
-                </div>
+                    </Card>
+                </CardGroup>
             </FadeTransform>
         );
     }
