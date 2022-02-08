@@ -109,19 +109,19 @@ class Staff extends Component {
                         <CardText>{`Phòng ban: ${depName}`}</CardText>
                         <CardText>{`Ngày nghỉ còn lại: ${staff.annualLeave}`}</CardText>
                         <CardText>{`Số giờ đã làm thêm : ${staff.overTime}`}</CardText>
-                        <Button
-                            className="btn btn-primary"
+                        <button
+                            className="btn btn-danger"
                             onClick={this.setModalOpen1}
                         >
                             Xóa nhân viên
-                        </Button>
+                        </button>
 
-                        <Button
-                            className="btn btn-primary mt-3"
+                        <button
+                            className="btn btn-warning text-white mt-3"
                             onClick={this.setModalOpen2}
                         >
                             Sửa thông tin
-                        </Button>
+                        </button>
                     </Card>
                 </CardGroup>
             </FadeTransform>
