@@ -1,13 +1,18 @@
 import React from 'react';
 import { Card, CardText, CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { FadeTransform } from 'react-animation-components';
 
 function RenderDepartment({ department }) {
     return (
-        <Card className="bg-info text-white">
-            <CardTitle className=" mt-2 m-1" heading="true"><b>{department.name}</b></CardTitle>
-            <CardText className=" m-1">{`Số lượng nhân viên: ${department.numberOfStaff}`}</CardText>
-        </Card>
+        <FadeTransform in transformProps={{ exitTransform: 'scale(0.5) translateY(-50%)' }}>
+
+            <Card className="bg-info text-white">
+                <CardTitle className=" mt-2 m-1" heading="true"><b>{department.name}</b></CardTitle>
+                <CardText className=" m-1">{`Số lượng nhân viên: ${department.numberOfStaff}`}</CardText>
+            </Card>
+
+        </FadeTransform>
     )
 }
 

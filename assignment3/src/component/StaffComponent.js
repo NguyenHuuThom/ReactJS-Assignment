@@ -16,6 +16,8 @@ import {
 import { Link } from "react-router-dom";
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Loading } from "./LoadingComponent";
+import { FadeTransform } from 'react-animation-components';
+
 
 // form validation 
 const required = (value) => value && value.length > 0;
@@ -143,14 +145,18 @@ const StaffList = ({ staffs, postStaff, isLoading, errMes }) => {
             </div>
 
             {/* Return full staffs list if user has not performed search, return message if there is no search results, return results if there is results */}
-            <div className="row">
-                {isLoading ? <Loading />
-                    : (errMes != null) ? errMes
-                        : SEARCH === null ? STAFFS
-                            : SEARCH.length === 0 ? "Không tìm thấy nhân viên nào"
-                                : SEARCH}
-            </div>
+            <FadeTransform in transformProps={{ exitTransform: 'scale(0.5) translateY(-50%)' }}>
 
+                <div className="row">
+                    {isLoading ? <Loading />
+                        : (errMes != null) ? errMes
+                            : SEARCH === null ? STAFFS
+                                : SEARCH.length === 0 ? "Không tìm thấy nhân viên nào"
+                                    : SEARCH}
+
+                </div>
+
+            </FadeTransform>
             {/* Modal */}
 
             <div>

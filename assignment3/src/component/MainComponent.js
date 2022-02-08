@@ -99,49 +99,51 @@ class Main extends Component {
         return (
             <div className="App">
                 <Header />
-                <TransitionGroup>
-                    <CSSTransition key={this.props.location.key} classNames="page" timeout={500}>
-                        <Switch>
-                            <Route path='/staff/:id' component={StaffWithId} />
-                            <Route exact path='/staffs' component={() =>
-                                <Staff
-                                    staffs={this.props.staffs.staffs}
-                                    departments={this.props.departments.departments}
-                                    postStaff={this.props.postStaff}
-                                    isLoading={this.props.staffs.isLoading}
-                                    errMes={this.props.staffs.errMes}
-                                />}
-                            />
-
-                            <Route path="/department/:id"
-                                component={(match) =>
-                                    <DepWithId
-                                        match={match}
-                                        fetchDepStaffs={this.props.fetchDepStaffs}
-                                        depStaffs={this.props.depStaffs}
+                <Switch>
+                    <TransitionGroup>
+                        <CSSTransition key={this.props.location.key} classNames="page" timeout={200}>
+                            <Switch>
+                                <Route path='/staff/:id' component={StaffWithId} />
+                                <Route exact path='/staffs' component={() =>
+                                    <Staff
+                                        staffs={this.props.staffs.staffs}
                                         departments={this.props.departments.departments}
-                                    />
-                                }
-                            />
+                                        postStaff={this.props.postStaff}
+                                        isLoading={this.props.staffs.isLoading}
+                                        errMes={this.props.staffs.errMes}
+                                    />}
+                                />
 
-                            <Route exact path='/departments' component={() =>
-                                <Department
-                                    departments={this.props.departments.departments}
-                                    isLoading={this.props.departments.isLoading}
-                                    errMes={this.props.departments.errMes}
-                                />}
-                            />
-                            <Route exact path='/salary' component={() =>
-                                <Salary
-                                    staffsSalaries={this.props.staffsSalaries.staffsSalaries}
-                                    isLoading={this.props.staffsSalaries.isLoading}
-                                    errMes={this.props.staffsSalaries.errMes}
-                                />}
-                            />
-                            <Redirect to="/staffs" />
-                        </Switch>
-                    </CSSTransition>
-                </TransitionGroup>
+                                <Route path="/department/:id"
+                                    component={(match) =>
+                                        <DepWithId
+                                            match={match}
+                                            fetchDepStaffs={this.props.fetchDepStaffs}
+                                            depStaffs={this.props.depStaffs}
+                                            departments={this.props.departments.departments}
+                                        />
+                                    }
+                                />
+
+                                <Route exact path='/departments' component={() =>
+                                    <Department
+                                        departments={this.props.departments.departments}
+                                        isLoading={this.props.departments.isLoading}
+                                        errMes={this.props.departments.errMes}
+                                    />}
+                                />
+                                <Route exact path='/salary' component={() =>
+                                    <Salary
+                                        staffsSalaries={this.props.staffsSalaries.staffsSalaries}
+                                        isLoading={this.props.staffsSalaries.isLoading}
+                                        errMes={this.props.staffsSalaries.errMes}
+                                    />}
+                                />
+                                <Redirect to="/staffs" />
+                            </Switch>
+                        </CSSTransition>
+                    </TransitionGroup>
+                </Switch>
                 <Footer />
             </div>
         );
