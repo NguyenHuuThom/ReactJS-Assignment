@@ -160,7 +160,7 @@ class Staff extends Component {
             <div className="container">
 
                 {/* Breadcrumb */}
-                <div className="FormGroup">
+                <div className="row">
                     <Breadcrumb>
                         <BreadcrumbItem><Link to="/staff">Nhân Viên</Link></BreadcrumbItem>
                         <BreadcrumbItem active>{name}</BreadcrumbItem>
