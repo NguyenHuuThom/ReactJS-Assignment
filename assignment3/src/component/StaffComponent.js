@@ -4,7 +4,6 @@ import {
     BreadcrumbItem,
     Card,
     CardImg,
-    CardText,
     CardTitle,
     Input,
     Button,
@@ -12,8 +11,6 @@ import {
     ModalBody,
     ModalHeader,
     Label,
-    Col,
-    Row,
     FormGroup,
 } from "reactstrap";
 import { Link } from "react-router-dom";
