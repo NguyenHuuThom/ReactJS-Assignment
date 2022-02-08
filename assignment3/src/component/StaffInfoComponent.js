@@ -273,11 +273,11 @@ class Staff extends Component {
                                         className="form-control"
                                         defaultValue={this.props.staffSelected.departmentId}
                                     >
-                                        <option value="Dept01">Sale</option>
-                                        <option value="Dept02">HR</option>
-                                        <option value="Dept03">Marketing</option>
                                         <option value="Dept04">IT</option>
+                                        <option value="Dept02">HR</option>
+                                        <option value="Dept01">Sale</option>
                                         <option value="Dept05">Finance</option>
+                                        <option value="Dept03">Marketing</option>
                                     </Control.select>
                                 </FormGroup>
                                 <FormGroup>
